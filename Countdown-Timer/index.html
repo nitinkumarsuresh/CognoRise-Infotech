@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Countdown Timer</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  #countdown {
+  font-size: 2em;
+  margin-top: 20px;
+  color: #333; /* Text color */
+  font-weight: bold; /* Bold font weight */
+  background-color: #f0f0f0; /* Background color */
+  padding: 10px; /* Padding */
+  border-radius: 8px; /* Rounded corners */
+}
+</style>
+</head>
+<body>
+
+<h1>Countdown Timer</h1>
+
+<div>
+  <label for="datetime">Select countdown target date and time:</label>
+  <input type="datetime-local" id="datetime">
+  <div>
+<button style="background-color: green; color: white;padding: 5px; margin-top: 54px;" onclick="startCountdown()">Start Countdown</button>
+</div>
+</div>
+
+<div style="background-color: rgb(188, 141, 231); width: 30%; display: flex;flex-direction: column; margin-left: 450px; " id="countdown"></div>
+
+<script>
+function startCountdown() {
+  const targetDate = new Date(document.getElementById("datetime").value).getTime();
+  
+  const countdown = setInterval(function() {
+    const currentDate = new Date().getTime();
+    const distance = targetDate - currentDate;
+
+    if (distance < 0) {
+      clearInterval(countdown);
+      document.getElementById("countdown").innerHTML = "Countdown expired!";
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("countdown").innerHTML = days + "d " + hours + "h "
+    + minutes + "m " + seconds + "s ";
+  }, 1000);
+}
+</script>
+
+</body>
+</html>

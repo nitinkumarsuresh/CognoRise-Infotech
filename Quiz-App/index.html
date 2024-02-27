@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Quiz App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container" style="margin-top: 50px;">
+        <h1>Online Quiz App</h1>
+        <div id="category-selector">
+            <label for="category">Select Category:</label>
+            <select id="category">
+                <option value="general">General Knowledge</option>
+                <option value="react">React</option>
+                <option value="django">Django</option>
+                <!-- Add more options for different categories -->
+            </select>
+            
+        </div>
+        <button onclick="startQuiz()" id="start-quiz-button">Start Quiz</button>
+        <div id="quiz" style="display: none;">
+            <div id="question"></div>
+            <div id="options"></div>
+            <button onclick="nextQuestion()">Next</button>
+        </div>
+        <div id="result" style="display: none;">
+            <h2>Quiz Result</h2>
+            <p>Your Score: <span id="score"></span></p>
+            <!-- You can add more result details here -->
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

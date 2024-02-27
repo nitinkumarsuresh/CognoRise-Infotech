@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>To-Do List</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #ee1e78e6;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  #todo-container {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 80px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+  }
+  input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  button {
+    margin-left: 130px;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    justify-content: center;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 5px;
+  }
+  button:hover {
+    background-color: #45a049;
+  }
+  .todo-item {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .todo-item input[type="checkbox"] {
+    margin-right: 10px;
+  }
+  .todo-item button {
+    background-color: #f44336;
+  }
+  .todo-item button:hover {
+    background-color: #d32f2f;
+  }
+</style>
+</head>
+<body>
+
+<div id="todo-container">
+  <h2 style="margin-top: -20px;">To-Do List</h2>
+  <input type="text" id="todo-input" placeholder="Add new task">
+  <button onclick="addTodo()">Add</button>
+  <div id="todo-list"></div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  loadTodos();
+});
+
+function loadTodos() {
+  const todos = JSON.parse(localStorage.getItem('todos')) || [];
+  const todoList = document.getElementById('todo-list');
+
+  todoList.innerHTML = '';
+
+  todos.forEach(function(todo, index) {
+    const todoItem = document.createElement('div');
+    todoItem.className = 'todo-item';
+    todoItem.innerHTML = `
+      <input type="checkbox" id="todo-${index}" ${todo.completed ? 'checked' : ''}>
+      <label for="todo-${index}">${todo.text}</label>
+      <button onclick="deleteTodo(${index})">Delete</button>
+    `;
+    todoList.appendChild(todoItem);
+  });
+}
+
+function addTodo() {
+  const todoInput = document.getElementById('todo-input');
+  const todoText = todoInput.value.trim();
+
+  if (todoText === '') {
+    alert('Please enter a valid task.');
+    return;
+  }
+
+  const todos = JSON.parse(localStorage.getItem('todos')) || [];
+  todos.push({ text: todoText, completed: false });
+  localStorage.setItem('todos', JSON.stringify(todos));
+
+  loadTodos();
+  todoInput.value = '';
+}
+
+function deleteTodo(index) {
+  const todos = JSON.parse(localStorage.getItem('todos')) || [];
+  todos.splice(index, 1);
+  localStorage.setItem('todos', JSON.stringify(todos));
+  loadTodos();
+}
+</script>
+
+</body>
+</html>

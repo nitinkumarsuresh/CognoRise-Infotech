@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Currency Converter</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #3b033b;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .converter-container {
+      background-color: #ce97e6;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      text-align: center;
+      
+    }
+
+    input {
+      width: 200px;
+      padding: 8px;
+      margin: 5px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    #result {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="converter-container">
+  <h1>Currency Converter</h1>
+  <label for="fromCurrency">From:</label>
+  <input type="text" id="fromCurrency" placeholder="Enter amount">
+
+  <label for="fromCurrency">Select currency:</label>
+  <select id="fromCurrencySelect"></select>
+
+  <br>
+
+  <label for="toCurrency">To:</label>
+  <input type="text" id="toCurrency" placeholder="Converted amount" readonly>
+
+  <label for="toCurrency">Select currency:</label>
+  <select id="toCurrencySelect"></select>
+
+  <br>
+
+  <button onclick="convertCurrency()">Convert</button>
+  <p id="result"></p>
+</div>
+
+<script>
+  const apiKey = '7984c9191419109f4fc7359d'; // Replace with your actual API key
+  const apiUrl = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/USD`; // Changed API endpoint
+
+  fetch(apiUrl)
+    .then(response => response.json())
+    .then(data => {
+      const currencies = Object.keys(data.conversion_rates); // Changed property name
+      const fromCurrencySelect = document.getElementById('fromCurrencySelect');
+      const toCurrencySelect = document.getElementById('toCurrencySelect');
+
+      currencies.forEach(currency => {
+        const option1 = document.createElement('option');
+        const option2 = document.createElement('option');
+
+        option1.value = currency;
+        option1.text = currency;
+        option2.value = currency;
+        option2.text = currency;
+
+        fromCurrencySelect.add(option1);
+        toCurrencySelect.add(option2);
+      });
+    });
+
+  function convertCurrency() {
+    const fromCurrency = document.getElementById('fromCurrencySelect').value;
+  const toCurrency = document.getElementById('toCurrencySelect').value;
+  const amount = parseFloat(document.getElementById('fromCurrency').value);
+
+    fetch(`${apiUrl}?from=${fromCurrency}`)
+      .then(response => response.json())
+      .then(data => {
+        const rate = data.conversion_rates[toCurrency]; // Changed property name
+        const convertedAmount = (amount * rate).toFixed(2);
+        document.getElementById('toCurrency').value = convertedAmount;
+        document.getElementById('result').innerText = `${amount} ${fromCurrency} = ${convertedAmount} ${toCurrency}`;
+      })
+      .catch(error => {
+        console.error('Error fetching conversion rate:', error);
+      });
+  }
+</script>
+
+</body>
+</html>
